@@ -1,0 +1,37 @@
+{
+    "name": "pocteam/poc-framework",
+    "type": "library",
+    "description": "A PHP framework for fast developing",
+    "authors": [
+        {
+            "name": "WANGQINGCHUN",
+            "email": "WANGQINGCHUN@kingsoft.com"
+        }
+    ],
+    "require": {
+        "php": ">= 7.0",
+        "psr/container": "^1.0",
+        "psr/http-message": "^1.0",
+        "ramsey/uuid": "^3.6",
+        "slim/slim": "^3.8",
+        "monolog/monolog": "^1",
+        "guzzlehttp/guzzle": "^6.2",
+        "zendframework/zend-config": "^3.1",
+        "illuminate/database": "^5.4",
+        "illuminate/events": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PocFramework\\": "src/PocFramework/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {"PocFramework\\": "tests/PocFramework"}
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@newgit.op.ksyun.com:ksyun-online/apitest.git"
+        }
+    ]
+}

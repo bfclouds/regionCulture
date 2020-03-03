@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="./tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+
+        <testsuite name="Inner">
+            <file>./tests/Inner/CardTypesTest.php</file>
+        </testsuite>
+
+        <testsuite name="Api">
+            <file>./tests/Api/RelationTest.php</file>
+        </testsuite>
+
+        <testsuite name="CleanUp">
+            <file>./tests/Api/CleanUp.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

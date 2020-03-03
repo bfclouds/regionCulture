@@ -1,0 +1,26 @@
+{
+  "name": "pocteam/poc-app-skeleton",
+  "type": "project",
+ "authors": [
+    {
+      "name": "WANGQINGCHUN",
+      "email": "WANGQINGCHUN@kingsoft.com"
+    }
+  ],
+  "require": {
+    "pocteam/poc-framework": "^0.1",
+    "eoghanobrien/php-simple-mail": "^1.7",
+    "phpmailer/phpmailer": "^6.1"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@newgit.op.ksyun.com:ksyun-online/poc-framework.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
