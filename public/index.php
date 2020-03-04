@@ -8,7 +8,7 @@
 use Slim\App;
 use PocFramework\Middleware\Log;
 use App\Middleware\ExceptionHandlerMiddleware;
-
+echo "a";exit();
 if (!defined('APP_ROOT')) {
     define('APP_ROOT', __DIR__ . '/..');
 }
