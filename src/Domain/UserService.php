@@ -9,7 +9,6 @@ namespace App\Domain;
 
 
 use App\Lib\ApiView;
-use App\Lib\Database\Redis;
 use App\Data\Table\UserTable;
 use PocFramework\Mvc\BaseModel;
 use PocFramework\Exception\Http\ApiException;
@@ -31,20 +30,20 @@ class UserService extends BaseModel
         $this->support = $this->get(SupportService::class);
     }
 
-    public function login($loginInfo) {
-        $email = trim($loginInfo['userEmail']);
-        $password = trim($loginInfo['password']);
+    public function login($params) {
+        $email = trim($params['userEmail']);
+        $password = trim($params['password']);
 
         $userInfo = $this->checkUserInfo($email);
         if (!$userInfo) {
             throw new ApiException([], ApiView::PASSPORT_USER_NOT_EXIST);
         }
 
-        if ($userInfo['passwd'] != $password) {
+        if ($userInfo['password'] != $password) {
             throw new ApiException([], ApiView::PASSPORT_PASSWORD_ERROR);
         }
 
-        unset($userInfo['passwd']);
+        unset($userInfo['password']);
 
         $token = $this->get(SupportService::class)->saveLoginToken($userInfo);
         if ($token) {
@@ -70,17 +69,9 @@ class UserService extends BaseModel
             throw new ApiException([], ApiView::PASSPORT_USEREMAIL_USERNAME_EXIST);
         }
 
-        $data = [
-            'name' => $userName,
-            'passwd' => trim($registerInfo['password']),
-            'email' => $email
-        ];
-        $ret = $this->get(UserTable::class)->addUser($data);
-        if ($ret) {
-            return true;
-        }
+        $ret = $this->get(UserTable::class)->addUser($registerInfo, $userName, $email);
 
-        return false;
+        return  $ret;
     }
 
     //注册,登录的时候检测用户是否存在（username,email）
@@ -103,7 +94,7 @@ class UserService extends BaseModel
 
     //发送验证码
     public function sendVerification($userInfo) {
-        $userName = $userInfo['userName'];
+        $userName = $userInfo['userName'] ?? '系统用户';
         $email = $userInfo['userEmail'];
         $code = $this->support->getVerificationCode(); //生成验证码
 

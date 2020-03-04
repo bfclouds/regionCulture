@@ -24,29 +24,32 @@ class UserTable extends BaseModel
     const COL_ID = 'id';
     const COL_EMAIL = 'email';
     const COL_NAME = 'name';
-    const COL_PASSWORD = 'passwd';
-    const COL_REGION = 'region';
+    const COL_PASSWORD = 'password';
     const COL_AVATAR = 'avatar';
-    const COL_REGISTER_TIME = 'register_time';
+    const COL_PHONE = 'phone';
+    const COL_CREATED_TIME = 'created_time';
+    const COL_UPDATED_TIME = 'updated_time';
 
     private static $selectColumns = [
         self::COL_ID,
         self::COL_EMAIL,
         self::COL_NAME,
         self::COL_PASSWORD,
-        self::COL_REGION,
-        self::COL_AVATAR
+        self::COL_AVATAR,
+        self::COL_PHONE
         ];
 
 
-    public function addUser($registerInfo) {
-        if(empty($registerInfo)) {
-            return false;
-        }
+    public function addUser($registerInfo, $userName, $email) {
+        $data = [
+            self::COL_NAME => $userName,
+            self::COL_PASSWORD => trim($registerInfo['password']),
+            self::COL_EMAIL => $email,
+        ];
 
-        $registerInfo[self::COL_REGISTER_TIME] = date("Y-m-d H:i:s");
+        $data[self::COL_CREATED_TIME] = $data[self::COL_UPDATED_TIME] = time();
 
-        return $this->dbRegional->table(self::TABLE)->insertGetId($registerInfo);
+        return $this->dbRegional->table(self::TABLE)->insertGetId($data);
     }
 
     public function  checkUserInfo($email, $userName) {

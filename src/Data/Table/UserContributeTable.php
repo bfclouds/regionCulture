@@ -21,23 +21,83 @@ class UserContributeTable extends BaseModel
 {
     const TABLE = 'user_contribute';
 
-    const ID = 'id';         //历史Id
-    const USER_ID = 'user_id';     //用户id
-    const REGION_ID = 'region_id';         //地区id
-    const TAG_ID = 'tag_id';     //标签id
-    const CONTRIBUTE_TITLE = 'title';    //用户投稿文章标题
-    const CONTRIBUTE_CONTENT = 'content';    //用户投稿文章内容
-    const CREATED_TIME = 'created_time';       //创建时间
+    const COL_ID = 'id';
+    const COL_USER_ID = 'user_id';     //用户id
+    const COL_REGION_ID = 'region_id';         //地区id
+    const COL_TAG_ID = 'tag_id';     //标签id
+    const COL_CONTRIBUTE_TITLE = 'title';    //用户投稿文章标题
+    const COL_CONTRIBUTE_CONTENT = 'content';    //用户投稿文章内容
+    const COL_IS_ENABLED = 'is_enabled';            // 是否通过审核
+    const COL_CREATED_TIME = 'created_time';       //创建时间
+    const COL_UPDATED_TIME = 'updated_time';       //修改时间
 
     const PAGE_COUNT = '3';
+    const ENABLED = 1; // 启用，通过审核
+    const NOT_ENABLED = 0; // 未启用，没有通过审核
 
     private static $selectColumns = [
-        self::ID,
-        self::REGION_ID,
-        self::USER_ID,
-        self::TAG_ID,
-        self::CONTRIBUTE_TITLE,
-        self::CONTRIBUTE_CONTENT
+        self::COL_ID,
+        self::COL_REGION_ID,
+        self::COL_USER_ID,
+        self::COL_TAG_ID,
+        self::COL_CONTRIBUTE_TITLE,
+        self::COL_CONTRIBUTE_CONTENT
     ];
 
+    public function listUserContribute() {
+        $cond = [
+            self::COL_IS_ENABLED => self::NOT_ENABLED
+        ];
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->get(self::$selectColumns)
+            ->toArray();
+    }
+
+    public function getUserArticle($params) {
+        $cond = [
+            self::COL_USER_ID => $params['user_id'],
+            self::COL_IS_ENABLED => self::ENABLED
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->get(self::$selectColumns)
+            ->toArray();
+    }
+
+    public function listUserArticles() {
+        $cond = [
+            self::COL_IS_ENABLED => self::ENABLED
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->get(self::$selectColumns)
+            ->toArray();
+    }
+
+    public function passArticle($params) {
+        $cond = [
+            self::COL_ID => $params['id']
+        ];
+
+        $data = [
+            self::COL_IS_ENABLED => self::ENABLED
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->update($data);
+    }
+
+    public function refuseArticle($params) {
+        $cond = [
+            self::COL_ID => $params['id']
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->delete();
+    }
 }

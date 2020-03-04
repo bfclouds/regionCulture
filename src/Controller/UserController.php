@@ -25,19 +25,19 @@ class UserController extends BaseController
 {
     //登录
     public function login(Request $request, Response $response) {
-        $paramBody = $request->getParsedBody();
+        $params = $request->getParsedBody();
 
         $rules = [
             'userEmail' => 'required|email',
             'password' => 'required|string'
         ];
 
-        $validator = new Validator($paramBody, $rules);
+        $validator = new Validator($params, $rules);
         if($validator->fails()) {
             return $this->apiView->respond([], ApiView::ERROR_PARAM, $validator->getMessage());
         }
 
-        $ret = $this->get(UserService::class)->login($paramBody);
+        $ret = $this->get(UserService::class)->login($params);
         return $this->apiView->respond($ret);
     }
 

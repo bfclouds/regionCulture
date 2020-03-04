@@ -8,10 +8,10 @@
 return [
     'default' => [
         'regional' => [
-            'host' => '139.199.36.105',
+            'host' => '127.0.0.1',
             'port' => 6379,
             'database' => 0,
-            'password' => 'jiang111',
+            'password' => '',
             'timeout' => 1,
         ]
     ]

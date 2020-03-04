@@ -12,7 +12,7 @@ use App\Middleware\ExceptionHandler;
 use App\Middleware\MediaTypeJsonMiddleware;
 use App\Controller\RegionalController;
 use App\Controller\UserContributeController;
-use App\Controller\HistoryController;
+use App\Controller\ArticleController;
 use App\Controller\FoodController;
 
 $app->group('/user', function (){
@@ -20,6 +20,14 @@ $app->group('/user', function (){
     $this->post('/register', UserController::class . ':register')->add(CheckCodeMiddleware::class);     //注册
     $this->post('/logout', UserController::class . ':logout');                                          //退出
     $this->get('/send_code', UserController::class . ':sendVerificationCode');                          //发送验证码
+});
+
+$app->group('/article', function () {
+    $this->get('/list_contributes', ArticleController::class . ':listUserContributes');                   //获取需要审核的文章列表
+    $this->get('/get_article', ArticleController::class . ':getUserArticle');                   //获取用户的文章列表
+    $this->get('/list_user_articles', ArticleController::class . ':listUserArticles');                   //获取所有通过审核的文章列表
+    $this->post('/pass_article', ArticleController::class . ':passArticle');                   //审核通过
+    $this->post('/refuse_article', ArticleController::class . ':refuseArticle');                   //审核不通过
 });
 
 $app->get('get_nav', UserController::class . ':getNav');                    //Nav列表
