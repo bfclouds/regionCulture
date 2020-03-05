@@ -24,25 +24,25 @@ use PocFramework\Mvc\BaseController;
 class RegionalController extends BaseController
 {
     // 添加地区
-    public function addRegion(Request $request, Response $response) {
-        $params = $request->getParsedBody();
-
-        $rules = [
-            'name' => 'required|string',
-            'simple' => 'required|string',
-            'historys' => 'string',
-            'foods' => 'string',
-            'scenerys' => 'string'
-        ];
-
-        $validator = new Validator($params, $rules);
-        if($validator->fails()) {
-            return $this->apiView->respond([$validator->getMessage()], ApiView::ERROR_PARAM);
-        }
-
-        $res = $this->get(RegionalService::class)->addRegion($params);
-        return $this->apiView->respond($res);
-    }
+//    public function addRegion(Request $request, Response $response) {
+//        $params = $request->getParsedBody();
+//
+//        $rules = [
+//            'name' => 'required|string',
+//            'simple' => 'required|string',
+//            'historys' => 'string',
+//            'foods' => 'string',
+//            'scenerys' => 'string'
+//        ];
+//
+//        $validator = new Validator($params, $rules);
+//        if($validator->fails()) {
+//            return $this->apiView->respond([$validator->getMessage()], ApiView::ERROR_PARAM);
+//        }
+//
+//        $res = $this->get(RegionalService::class)->addRegion($params);
+//        return $this->apiView->respond($res);
+//    }
 
     //获取通過id数据信息
     public function getRegionSimple(Request $request, Response $response) {
@@ -111,5 +111,11 @@ class RegionalController extends BaseController
     public function initInfo(Request $request, Response $response) {
         $this->get(RegionalService::class)->initInfo();
         return $this->apiView->respond([]);
+    }
+
+    // 地区名称列表
+    public function listRegionNames(Request $request, Response $response) {
+        $ret = $this->get(RegionalService::class)->listRegionNames();
+        return $this->apiView->respond($ret);
     }
 }

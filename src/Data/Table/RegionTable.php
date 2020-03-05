@@ -110,4 +110,21 @@ class RegionTable extends BaseModel
             ->count();
     }
 
+    public function listRegionNames()
+    {
+        return $this->dbRegional->table(self::TABLE)
+            ->get(self::$selectSearchColumns)
+            ->toArray();
+    }
+
+    public function getRegionName($id) {
+        $cond = [
+            self::REGION_ID => $id
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->get(self::$selectSearchColumns)
+            ->first();
+    }
 }

@@ -33,16 +33,18 @@ $app->group('/article', function () {
 $app->get('get_nav', UserController::class . ':getNav');                    //Nav列表
 
 $app->group('/region', function () {
-    $this->post('/add_region', RegionalController::class . ':addRegion');
+//    $this->post('/add_region', RegionalController::class . ':addRegion');
     $this->get('/init_info', RegionalController::class . ':initInfo');
     $this->get('/list_simples', RegionalController::class . ':listSimple');
     $this->get('/get_detail', RegionalController::class . ':getRegionSimple');
     $this->get('/list_hot', RegionalController::class . ':listHot');
     $this->get('/get_search', RegionalController::class . ':searchRegion');
+    $this->get('/list_region_names', RegionalController::class . ':listRegionNames');
 });
 
 $app->group('/food', function () {
     $this->get('/list_simples', FoodController::class . ':listFoods');
+    $this->post('/add_food', FoodController::class . ':addFood');
 });
 
 $app->post('/add_article', UserContributeController::class . ':addArticle');                      //我添加文章

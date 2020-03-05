@@ -39,37 +39,37 @@ class RegionalService extends BaseModel
         $this->regionalTable = $this->get(RegionTable::class);
     }
 
-    public function addRegion($params) {
-        $name = $params['name'];
-        $simple = $params['simple'];
-        $res = $this->searchByName($name);
-        if (empty($res)) {
-            throw new ApiException([], ApiView::SERVER_FAILURE);
-        }
-
-        $regionId = $this->regionalTable->addRegion($name, $simple);
-        // 历史
-        if (isset($params['historys'])) {
-            $historys = $params['historys'];
-            foreach ($historys as $history) {
-                $this->get(HistoryService::class)->addHistory($regionId, $history);
-            }
-        }
-        // 美食
-        if (isset($params['foods'])) {
-            $foods = $params['foods'];
-            foreach ($foods as $food) {
-                $this->get(FoodService::class)->addFood($regionId, $food);
-            }
-        }
-        // 景色
-        $scenerys = $params['scenerys'];
-        foreach ($scenerys as $scenery) {
-            $this->get(SceneryService::class)->addScenery($regionId, $scenery);
-        }
-
-        return $regionId;
-    }
+//    public function addRegion($params) {
+//        $name = $params['name'];
+//        $simple = $params['simple'];
+//        $res = $this->searchByName($name);
+//        if (empty($res)) {
+//            throw new ApiException([], ApiView::SERVER_FAILURE);
+//        }
+//
+//        $regionId = $this->regionalTable->addRegion($name, $simple);
+//        // 历史
+//        if (isset($params['historys'])) {
+//            $historys = $params['historys'];
+//            foreach ($historys as $history) {
+//                $this->get(HistoryService::class)->addHistory($regionId, $history);
+//            }
+//        }
+//        // 美食
+//        if (isset($params['foods'])) {
+//            $foods = $params['foods'];
+//            foreach ($foods as $food) {
+//                $this->get(FoodService::class)->addFood($regionId, $food);
+//            }
+//        }
+//        // 景色
+//        $scenerys = $params['scenerys'];
+//        foreach ($scenerys as $scenery) {
+//            $this->get(SceneryService::class)->addScenery($regionId, $scenery);
+//        }
+//
+//        return $regionId;
+//    }
 
     public function initInfo() {
         $path = JSON_DIR;
@@ -160,5 +160,15 @@ class RegionalService extends BaseModel
 
     public function listHot() {
         return  $this->regionalTable->listSearch();
+    }
+
+    public function listRegionNames() {
+        $ret = $this->regionalTable->listRegionNames();
+        return $ret ?: [];
+    }
+
+    public function getRegionName($id) {
+        $ret = $this->regionalTable->getRegionName($id);
+        return $ret ?: [];
     }
 }

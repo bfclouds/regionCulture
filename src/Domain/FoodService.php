@@ -22,20 +22,20 @@ use App\Lib\ApiView;
 
 class FoodService extends BaseModel
 {
-    public function addFood($regionId, $params) {
-        try {
-            $this->dbRegional->beginTransaction();
-
-            $id = $this->get(FoodTable::class)->addFood($params);
-            $this->get(RRegionFoodTable::class)->addRFood($regionId, $id);
-
-            $this->dbRegional->commit();
-
-            return $id;
-        }catch (\Exception $e) {
-            throw new ApiException([], ApiView::DATABASE_ERROR);
-        }
-    }
+//    public function addFood($regionId, $params) {
+//        try {
+//            $this->dbRegional->beginTransaction();
+//
+//            $id = $this->get(FoodTable::class)->addFood($params);
+//            $this->get(RRegionFoodTable::class)->addRFood($regionId, $id);
+//
+//            $this->dbRegional->commit();
+//
+//            return $id;
+//        }catch (\Exception $e) {
+//            throw new ApiException([], ApiView::DATABASE_ERROR);
+//        }
+//    }
 
     public function listFoods($params) {
         $foods =  $this->get(FoodTable::class)->listFoods($params);
@@ -56,4 +56,15 @@ class FoodService extends BaseModel
         return $data ?: [];
     }
 
+    public function addFood($params) {
+        $regionId = $params['region_id'];
+        $region = $this->get(RegionalService::class)->getRegionName($regionId);
+
+        if (empty($region)) {
+            throw new ApiException([], ApiView::SERVER_FAILURE);
+        }
+
+        $ret = $this->get(FoodTable::class)->addFood($params, $region);
+        return $ret;
+    }
 }

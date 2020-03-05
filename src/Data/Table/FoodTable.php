@@ -54,5 +54,15 @@ class FoodTable extends BaseModel
             ->count();
     }
 
+    public function addFood($params, $region) {
+        $data = [
+            self::FOOD_NAME => $params['name'],
+            self::FOOD_SIMPLE => $params['content'],
+            self::REGION_ID => $region['id'],
+            self::REGION_NAME => $region['name']
+        ];
 
+        return $this->dbRegional->table(self::TABLE)
+            ->insertGetId($data);
+    }
 }

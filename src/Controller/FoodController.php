@@ -47,4 +47,20 @@ class FoodController extends BaseController
         $ret = $this->get(FoodService::class)->listDetail($params);
         return $this->apiView->respond($ret);
     }
+
+    public function addFood(Request $request, Response $response) {
+        $params = $request->getParsedBody();
+        $rules = [
+            'region_id' => 'required|numeric|min:1',
+            'name' => 'required|string',
+            'content' => 'required|string'
+        ];
+        $validator = new Validator($params, $rules);
+        if($validator->fails()) {
+            return $this->apiView->respond([], ApiView::ERROR_PARAM, $validator->getMessage());
+        }
+
+        $ret = $this->get(FoodService::class)->addFood($params);
+        return $this->apiView->respond($ret);
+    }
 }
