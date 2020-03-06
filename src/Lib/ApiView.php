@@ -119,14 +119,14 @@ class ApiView extends AbstractApiView
             ]
         ],
         self::PASSPORT_USER_NOT_EXIST => [
-            400,
+            200,
             [
                 'en' => 'user is not exists',
                 'zh' => '该用户不存在',
             ]
         ],
         self::PASSPORT_PASSWORD_ERROR => [
-            400,
+            200,
             [
                 'en' => 'userName or password error',
                 'zh' => '用户名密码错误',
@@ -140,14 +140,14 @@ class ApiView extends AbstractApiView
             ]
         ],
         self::SEND_CAPTCHA_ERROR => [
-            400,
+            200,
             [
                 'en' => 'captcha error',
                 'zh' => '验证码错误'
             ]
         ],
         self::PASSPORT_USEREMAIL_USERNAME_EXIST => [
-            400,
+            200,
             [
                 'en' => 'userEmail or userName already exists',
                 'zh' => '该邮箱或用户名已存在',

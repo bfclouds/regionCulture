@@ -82,4 +82,24 @@ class UserController extends BaseController
         $this->get(UserService::class)->sendVerification($params);
         return $this->apiView->respond([]);
     }
+
+    public function updateUser(Request $request, Response $response) {
+        $params = $request->getParsedBody();
+        $rules = [
+            'id' => 'required|numeric|min:1',
+            'name' => 'string',
+            'phone' => 'string',
+            'avatar' => 'string',
+            'region' => 'string'
+        ];
+
+        $validator = new Validator($params, $rules);
+        if($validator->fails()) {
+            return $this->apiView->respond([], ApiView::ERROR_PARAM, $validator->getMessage());
+        }
+
+        $ret = $this->get(UserService::class)->updateUser($params);
+        return $this->apiView->respond($ret);
+    }
+
 }

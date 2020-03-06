@@ -45,12 +45,12 @@ class UserService extends BaseModel
 
         unset($userInfo['password']);
 
-        $token = $this->get(SupportService::class)->saveLoginToken($userInfo);
-        if ($token) {
-            $userInfo['token'] = $token;
-        }else {
-            throw new ApiException([], ApiView::SERVER_FAILURE);
-        }
+//        $token = $this->get(SupportService::class)->saveLoginToken($userInfo);
+//        if ($token) {
+//            $userInfo['token'] = $token;
+//        }else {
+//            throw new ApiException([], ApiView::SERVER_FAILURE);
+//        }
 
         return $userInfo;
     }
@@ -94,7 +94,7 @@ class UserService extends BaseModel
 
     //发送验证码
     public function sendVerification($userInfo) {
-        $userName = $userInfo['userName'] ?? '系统用户';
+        $userName = $userInfo['userName'] ?? '尊敬的客户';
         $email = $userInfo['userEmail'];
         $code = $this->support->getVerificationCode(); //生成验证码
 
@@ -114,5 +114,14 @@ class UserService extends BaseModel
             throw new ApiException([], ApiView::SERVER_FAILURE);
         }
         return true;
+    }
+
+    public function updateUser($params) {
+        $this->get(UserTable::class)->updateUser($params);
+        $ret = $this->get(UserTable::class)->getUser($params['id']);
+        if (!empty($ret)) {
+            unset($ret['password']);
+        }
+        return $ret;
     }
 }

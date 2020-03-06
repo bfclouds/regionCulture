@@ -27,6 +27,8 @@ class UserTable extends BaseModel
     const COL_PASSWORD = 'password';
     const COL_AVATAR = 'avatar';
     const COL_PHONE = 'phone';
+    const COL_REGION = 'region';
+    const COL_IS_ADMIN = 'is_admin';
     const COL_CREATED_TIME = 'created_time';
     const COL_UPDATED_TIME = 'updated_time';
 
@@ -35,8 +37,10 @@ class UserTable extends BaseModel
         self::COL_EMAIL,
         self::COL_NAME,
         self::COL_PASSWORD,
+        self::COL_REGION,
         self::COL_AVATAR,
-        self::COL_PHONE
+        self::COL_PHONE,
+        self::COL_IS_ADMIN,
         ];
 
 
@@ -62,5 +66,36 @@ class UserTable extends BaseModel
         }
 
         return $query->get(self::$selectColumns)->first();
+    }
+
+    public function updateUser($params) {
+        $cond = [
+            self::COL_ID => $params['id']
+        ];
+        $data = [];
+        if (isset($params['name'])) {
+            $data[self::COL_NAME] = $params['name'];
+        }
+        if (isset($params['phone'])) {
+            $data[self::COL_PHONE] = $params['phone'];
+        }
+        if (isset($params['region'])) {
+            $data[self::COL_REGION] = $params['region'];
+        }
+
+        return $this->dbRegional->table(self::TABLE)
+            ->where($cond)
+            ->update($data);
+    }
+
+    public function getUser($id) {
+        $cond = [
+            self::COL_ID => $id
+        ];
+
+        return $this->dbRegional->table(self::TABLE)
+        ->where($cond)
+            ->get(self::$selectColumns)
+            ->first();
     }
 }

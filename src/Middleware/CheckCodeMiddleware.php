@@ -30,8 +30,9 @@ class CheckCodeMiddleware extends BaseMiddleware
         $email = $params['userEmail'];  //邮箱
         $code = $params['captcha'];        //验证码
 
-        if (sizeof($code) > 4) {
-            throw new ApiException([], ApiView::SEND_CAPTCHA_ERROR);
+        if (strlen($code) != 4) {
+//            throw new ApiException([], ApiView::SEND_CAPTCHA_ERROR);
+            throw new ApiException([], ApiView::SERVER_FAILURE);
         }
         $ret = $this->get(SupportService::class)->checkCaptcha($email, $code);
 

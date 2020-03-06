@@ -20,6 +20,7 @@ $app->group('/user', function (){
     $this->post('/register', UserController::class . ':register')->add(CheckCodeMiddleware::class);     //注册
     $this->post('/logout', UserController::class . ':logout');                                          //退出
     $this->get('/send_code', UserController::class . ':sendVerificationCode');                          //发送验证码
+    $this->post('/update_user', UserController::class . ':updateUser');
 });
 
 $app->group('/article', function () {

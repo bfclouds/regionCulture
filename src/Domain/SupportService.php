@@ -65,17 +65,17 @@ class SupportService extends BaseModel
         return [];
     }
 
-    //验证码发送次数
+    //获取key对应的value值
     public function attempts($key)
     {
-        $count = $this->redisCache->get($key);
-        return $count ? $count : 0;
+        $ret = $this->redisCache->get($key);
+        return $ret;
     }
 
     //检查发送验证码限制
     public function checkCodeLimit($email) {
         $count = $this->attempts(self::REDIS_VERIFICATION_CODE_TIME . $email);
-        if ($count >=3) {
+        if (!empty($count) && $count >=3) {
             throw new ApiException([], ApiView::SEND_EMAIL_LIMIT);
         }
         return $count ?: 0;
@@ -84,7 +84,8 @@ class SupportService extends BaseModel
     //检验验证码
     public function checkCaptcha($email, $captcha) {
         $redisCaptcha = $this->attempts(self::REDIS_VERIFICATION_CODE . $email);
-        return $redisCaptcha == $captcha ? true : false;
+
+        return (int)$redisCaptcha == (int)$captcha ? true : false;
     }
 
     //检查是否登录
